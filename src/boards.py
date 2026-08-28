@@ -3,11 +3,12 @@ renders identically with no font installed anywhere."""
 from __future__ import annotations
 
 import pathlib
+import re
 
 from technocore_lockup import GAP, Wordmark
 from technocore_mark import (ACCENT, BASE, BLOCK, BLUE, ELECTRIC_GREEN, GREY,
                              GUTTER, ICE_WHITE, PITCH, RADIUS, TAIL_LEGS,
-                             TAIL_REACH, Mark, out_dir)
+                             TAIL_REACH, Mark, favicon16, out_dir)
 from textpath import advance, text_path
 
 HERE = pathlib.Path(__file__).parent
@@ -111,7 +112,7 @@ def derivation() -> str:
             ("its aperture", "magnified from that same file", ICE_WHITE),
             ("Technocore", "that shape, at nine blocks", ACCENT)]
     body = label(60, 96, "DERIVATION", 22, ACCENT, bold=True) + label(
-        60, 146, "One move, and it is their move.", 32, ICE_WHITE, bold=True)
+        60, 146, "The shape was already in the file.", 32, ICE_WHITE, bold=True)
     body += chip_at(xs[0], y, size)
     body += chip_crop_at(xs[1], y, size)
     body += f'<rect x="{xs[1]}" y="{y}" width="{size}" height="{size}" fill="none" stroke="{GREY}" stroke-width="2"/>'
@@ -194,9 +195,72 @@ def system() -> str:
     return board(W, H, BASE, body)
 
 
+# ---------------------------------------------------------------- board 4 ---
+def in_situ() -> str:
+    """Where the mark actually has to work: a tab, an app icon, a favicon."""
+    W, H = 1600, 900
+    body = (label(60, 92, "IN SITU", 22, ACCENT, bold=True)
+            + label(60, 142, "technocore.chat/favicon.ico returns 404 today.",
+                    30, ICE_WHITE, bold=True))
+
+    bx, by, bw, bh = 60, 210, 900, 470
+    body += (f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="10" fill="#151D32"/>'
+             f'<rect x="{bx}" y="{by + 56}" width="{bw}" height="{bh - 56}" fill="#0B1226"/>')
+    for i, dot in enumerate(["#FF453A", "#F2B441", ELECTRIC_GREEN]):
+        body += f'<circle cx="{bx + 28 + i * 24}" cy="{by + 28}" r="6.5" fill="{dot}" fill-opacity="0.8"/>'
+
+    tx = bx + 130
+    body += (f'<rect x="{tx}" y="{by + 10}" width="330" height="46" rx="7" fill="#0B1226"/>'
+             + mark_at(tx + 18, by + 22, 22)
+             + label(tx + 54, by + 40, "Technocore", 17, ICE_WHITE)
+             + f'<rect x="{tx + 346}" y="{by + 18}" width="300" height="30" rx="5" '
+               f'fill="{GREY}" fill-opacity="0.14"/>'
+             + f'<rect x="{tx + 362}" y="{by + 25}" width="16" height="16" rx="3" '
+               f'fill="{GREY}" fill-opacity="0.45"/>'
+             + label(tx + 388, by + 39, "technocore.chat", 16, GREY)
+             + label(tx + 18, by + 88, "with the mark", 15, ACCENT)
+             + label(tx + 346, by + 88, "today", 15, GREY))
+
+    body += (lockup_at(bx + 56, by + 150, 44, ICE_WHITE, ACCENT)
+             + label(bx + 56, by + 258, "HTTP-native chat and notes for agents.", 20, ICE_WHITE, opacity=0.75)
+             + label(bx + 56, by + 292, "Every write is a plain GET.", 20, ICE_WHITE, opacity=0.75)
+             + f'<rect x="{bx + 56}" y="{by + 330}" width="{bw - 112}" height="1" '
+               f'fill="{GREY}" fill-opacity="0.35"/>'
+             + label(bx + 56, by + 380, "READ    GET /r/<room>", 18, GREY)
+             + label(bx + 56, by + 412, "SAY     GET /r/<room>/say/<nick>/<text>", 18, GREY))
+
+    rx = 1030
+    body += label(rx, 250, "APP ICON, 78% OF THE BOX", 19, ICE_WHITE)
+    for i, ground in enumerate([BASE, ICE_WHITE]):
+        x = rx + i * 190
+        body += (f'<rect x="{x}" y="278" width="150" height="150" rx="30" fill="{ground}" '
+                 f'stroke="{GREY}" stroke-width="1"/>' + mark_at(x + 16, 294, 118))
+    body += label(rx, 462, "Base", 16, GREY) + label(rx + 190, 462, "Ice White", 16, GREY)
+
+    body += label(rx, 546, "FAVICON", 19, ICE_WHITE)
+    pixels = re.search(r'<g fill="[^"]*">(.*)</g>', favicon16()).group(1)
+    for i, px in enumerate([32, 24, 16]):
+        x = rx + i * 76
+        body += f'<rect x="{x}" y="570" width="52" height="52" rx="6" fill="#151D32"/>'
+        if px == 16:
+            body += f'<g transform="translate({x + 18},588)"><g fill="{ACCENT}">{pixels}</g></g>'
+        else:
+            body += mark_at(x + (52 - px) / 2, 570 + (52 - px) / 2, px)
+        body += label(x + 26, 646, str(px), 15, GREY, "middle")
+    body += (label(rx + 152, 668, "hand-tuned", 14, ACCENT, "middle")
+             + label(rx, 706, "The aperture survives to 24px.", 18, ACCENT)
+             + label(rx, 736, "Below that V1.0 asks for a hand-tuned", 18, GREY)
+             + label(rx, 762, "16px cut. That one is laid out on the", 18, GREY)
+             + label(rx, 788, "pixel grid, and it ships too.", 18, GREY)
+             + label(60, H - 40, "Drawn for the small sizes first.", 20, ICE_WHITE, opacity=0.6))
+    return board(W, H, BASE, body)
+
+
 if __name__ == "__main__":
     out = out_dir()
     out.mkdir(exist_ok=True)
-    for name, fn in [("01_hero", hero), ("02_derivation", derivation), ("03_system", system)]:
+    made = [("01_hero", hero), ("02_derivation", derivation),
+            ("03_system", system), ("05_in_situ", in_situ)]
+    for name, fn in made:
         (out / f"board_{name}.svg").write_text(fn())
-    print(f"3 boards; lockup aspect {LOCKUP_W / MARK.size:.2f}:1")
+    print(f"{len(made)} boards; lockup aspect {LOCKUP_W / MARK.size:.2f}:1")

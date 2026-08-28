@@ -61,7 +61,8 @@ matches. Exit code 0 if everything holds.
 cd src
 python3 technocore_mark.py     # the mark, five inks
 python3 technocore_lockup.py   # six lockups, word mark outlined from the font
-python3 boards.py              # the three boards above
+python3 boards.py              # four of the five boards here
+python3 verify_board.py        # the fifth, which is a picture of a real run
 ```
 
 Requires `fonttools`. Re-running overwrites `dist/` with byte-identical files.
