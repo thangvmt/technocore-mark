@@ -126,6 +126,37 @@ class Mark:
         )
 
 
+def favicon16(ink: str = ACCENT, ground: str | None = None) -> str:
+    """The hand-tuned 16 px cut V1.0 asks for below 24 px.
+
+    Scaling the geometry down closes the aperture and the mark reads as a lump.
+    So this one is laid out on the pixel grid instead: blocks of 3, gutters of
+    1, and a three-step tail. Same object, drawn for the pixels it lands on.
+    """
+    px, gap, span = 3, 1, 3 * 3 + 2 * 1     # 11 px body
+    left, top = 4, 1
+    on = [[False] * 16 for _ in range(16)]
+    for row in range(3):
+        for col in range(3):
+            if row == 1 and col == 1:
+                continue                     # the aperture stays open
+            for dy in range(px):
+                for dx in range(px):
+                    on[top + row * (px + gap) + dy][left + col * (px + gap) + dx] = True
+    for step in range(3):                    # the tail, one pixel per step at 45
+        row = top + span + step
+        for dx in range(px):
+            on[row][left - 1 - step + dx] = True
+
+    rects = "".join(
+        f'<rect x="{x}" y="{y}" width="1" height="1"/>'
+        for y, line in enumerate(on) for x, cell in enumerate(line) if cell
+    )
+    bg = f'<rect width="16" height="16" fill="{ground}"/>' if ground else ""
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" '
+            f'shape-rendering="crispEdges">{bg}<g fill="{ink}">{rects}</g></svg>')
+
+
 def out_dir() -> "pathlib.Path":
     """dist/ sits beside the source in the working tree and one level up in the
     published repo. Prefer an existing one over creating a second."""
@@ -143,4 +174,5 @@ if __name__ == "__main__":
                       ("base", BASE), ("ice", ICE_WHITE)]:
         (out / f"technocore_mark_{name}.svg").write_text(m.svg(ink))
     (out / "technocore_icon.svg").write_text(m.icon_svg(ACCENT, BASE))
+    (out / "technocore_favicon_16.svg").write_text(favicon16(ACCENT))
     print(f"mark is {m.size:.2f} square, body {m.body:.2f}, wrote {out}")

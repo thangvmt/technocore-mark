@@ -100,6 +100,15 @@ improvising."* Three decisions were not derivable from the published system, and
 corners instead of 45° cuts, the tail's proportions, and the gap between mark
 and word. Each is one line in the generator.
 
+## In situ
+
+`technocore.chat/favicon.ico` returns 404 today. This is the gap the mark fills,
+so it is drawn for that job first: the aperture survives to 24 px, and below
+that V1.0 asks for a hand-tuned cut, which `dist/technocore_favicon_16.svg`
+supplies — laid out on the pixel grid rather than scaled down.
+
+![in situ](boards/technocore_05_in_situ.png)
+
 ## Licence
 
 Code: MIT. Fonts: SIL Open Font Licence, see `fonts/OFL.txt`.
