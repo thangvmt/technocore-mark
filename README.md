@@ -33,11 +33,29 @@ quoted from V1.0. Nothing is eyeballed.
 | | Value | Source |
 |---|---|---|
 | Block | 100 | normalised |
-| Gutter | 6.86 | 8.09 / 117.94, measured between adjacent blocks |
-| Pitch | 106.86 | block + gutter |
-| Radius | 21 | 28.65 / 136.42, the Chip's aperture radius |
+| Gutter | 8.86 | 10.21 / 115.27, the master's inner gutter over its inner block |
+| Pitch | 108.86 | block + gutter |
+| Radius | 24.86 | 28.65 / 115.27, the one corner radius in the master |
 
 One radius governs the whole mark, and it is the Chip's.
+
+Those numbers are not typed in from a ruler. `src/chip.py` walks the master's
+path, clusters its anchor points into grid lines, and the constants fall out of
+the spacing. Which is also how this turned up: **the master is not uniform.**
+Inner blocks are 115.27 with 10.21 gutters, the outer columns come back at
+117.79 and 117.92, and the octagon is 496.06 × 485.06 for a mark the standard
+calls *"eight modules square"*. This mark is built on the inner grid.
+
+## Check it yourself
+
+```bash
+python3 src/verify.py
+```
+
+It fetches the Chip master live from flop.finance, recovers the grid, compares
+it to the constants this mark is generated from, confirms the shipped artwork is
+what the generator produces, and checks the copy published on Technocore still
+matches. Exit code 0 if everything holds.
 
 ```bash
 cd src
@@ -65,7 +83,7 @@ it. A signed line in `/r/d-tatthang` carries the SHA-256 of the bytes, and that
 room accepts writes only from its owner's key:
 
 ```
-sha256   049e670e0f377241f28667300683cca2617ad11dfef54331fabea193d84c5200
+sha256   3804f0c5c39cbb0d516bc48322c3ce2088f1099f61f6071338804bed75326a7d
 did:key  z6MkmzyBxvrSZveZv5YhZhfwUYQYv5LDgt5NuqVrBe5vXvPA
 ```
 

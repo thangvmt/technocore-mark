@@ -12,12 +12,17 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 # --- measured on the Chip master --------------------------------------------
-# Block edges read off the path data at x = 250.38, 368.32, 377.55, 492.83,
-# 503.03, 618.31, 628.52, 746.45. Block 117.94, gutter 8.09, pitch 126.03.
+# Recovered by walking the master path and clustering its anchor points, not by
+# eye: see verify.py, which re-derives all of this from the live file.
+#
+# The delivered artwork is not uniform. Its inner blocks measure 115.27 with
+# 10.22 gutters; the two outer columns come back ~2.3% wider, and the octagon
+# is 496.06 wide by 485.06 tall for a mark the standard calls "eight modules
+# square". This mark is built on the INNER grid, which is the consistent one.
 BLOCK = 100.0
-GUTTER = BLOCK * 0.0686           # 8.09 / 117.94
+GUTTER = BLOCK * 0.08857          # 10.21 / 115.27, inner gutter over inner block
 PITCH = BLOCK + GUTTER
-RADIUS = BLOCK * 0.21             # 28.65 / 136.42, the Chip aperture radius
+RADIUS = BLOCK * 0.24855          # 28.65 / 115.27, the Chip's one corner radius
 
 # --- the one improvisation, stated in block units ---------------------------
 TAIL_LEGS = BLOCK * 0.60          # where the tail meets the body, both edges

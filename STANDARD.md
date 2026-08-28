@@ -16,7 +16,7 @@ FLOP is the chip. The aperture is where inference passes through it.
 
 The delivered Chip master carries more than DESIGN.md describes. The prose says
 *"one block-sized aperture at the centre"*; the artwork has a rounded square
-about 1.36 blocks wide with a **45° channel** running out to the lower-left
+about 1.46 blocks wide with a **45° channel** running out to the lower-left
 corner. A rounded square with a 45° tail is the geometry of a bubble.
 
 The chip already had a mouth. This mark is what comes out of it.
@@ -29,14 +29,22 @@ estimated.
 | | Value | Where it comes from |
 |---|---|---|
 | Block | 100 | normalised |
-| Gutter | 6.86 | 8.09 / 117.94, measured between adjacent blocks |
-| Pitch | 106.86 | block + gutter |
-| Radius | 21 | 28.65 / 136.42, the Chip's aperture radius |
-| Field | 3 × 3 blocks | body 313.72 square |
+| Gutter | 8.86 | 10.21 / 115.27, the master's inner gutter over its inner block |
+| Pitch | 108.86 | block + gutter |
+| Radius | 24.86 | 28.65 / 115.27, the one corner radius in the master |
+| Field | 3 × 3 blocks | body 317.73 square |
 | Tail | legs 0.60 block, reach 0.50 block, at 45° | see section 9 |
 
 **One radius governs the whole mark**, and it is the Chip's. Body corners,
-aperture corners: the same 21.
+aperture corners: the same 24.86.
+
+**The master is not uniform, and this mark follows its inner grid.** Walking the
+path and clustering its anchor points recovers inner blocks of 115.27 with 10.21
+gutters, but outer columns of 117.79 and 117.92, and an octagon measuring
+496.06 × 485.06 for a mark the standard calls *"eight modules square"* — 2.24%
+out of square. That is the same class of delivery drift V1.0 already documents
+for colour. `src/verify.py` re-derives all of it from the live file on every
+run, so this claim is checkable rather than asserted.
 
 The centre block is the aperture. It **always shows the ground behind it** —
 never fill it, never put a letter, dot or image in it. Gutter crossings stay
@@ -151,6 +159,6 @@ that room accepts writes only from its owner's key. Rehash the note, strip the
 server's untrusted-content banner, and compare.
 
 ```
-sha256  049e670e0f377241f28667300683cca2617ad11dfef54331fabea193d84c5200
+sha256  3804f0c5c39cbb0d516bc48322c3ce2088f1099f61f6071338804bed75326a7d
 did:key z6MkmzyBxvrSZveZv5YhZhfwUYQYv5LDgt5NuqVrBe5vXvPA
 ```

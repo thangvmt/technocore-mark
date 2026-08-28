@@ -6,7 +6,8 @@ import pathlib
 
 from technocore_lockup import GAP, Wordmark
 from technocore_mark import (ACCENT, BASE, BLOCK, BLUE, ELECTRIC_GREEN, GREY,
-                             ICE_WHITE, PITCH, Mark, out_dir)
+                             GUTTER, ICE_WHITE, PITCH, RADIUS, TAIL_LEGS,
+                             TAIL_REACH, Mark, out_dir)
 from textpath import advance, text_path
 
 HERE = pathlib.Path(__file__).parent
@@ -136,7 +137,7 @@ def system() -> str:
     # left: construction
     gx, gy, gh = 96, 168, 300
     k = gh / MARK.size
-    t, bb = 50.0 * k, MARK.body * k
+    t, bb = TAIL_REACH * k, MARK.body * k
     for i in range(3):
         for j in range(3):
             body += (f'<rect x="{gx + t + j * PITCH * k:.2f}" y="{gy + i * PITCH * k:.2f}" '
@@ -147,9 +148,10 @@ def system() -> str:
     body += label(gx + t + bb / 2, gy - 22, "3 blocks", 17, GREY, "middle")
     body += label(gx + t + bb + 18, gy + bb + 34, "45° tail", 17, ACCENT)
     for n, line in enumerate([
-            "block 100 · gutter 6.86 · pitch 106.86",
-            "radius 21, the Chip's aperture radius — everywhere",
-            "tail legs 0.60 block, reach 0.50 block"]):
+            f"block {BLOCK:.0f} · gutter {GUTTER:.2f} · pitch {PITCH:.2f}",
+            f"radius {RADIUS:.2f}, the Chip's one corner radius — everywhere",
+            f"tail legs {TAIL_LEGS / BLOCK:.2f} block, "
+            f"reach {TAIL_REACH / BLOCK:.2f} block"]):
         body += label(gx, gy + gh + 70 + n * 34, line, 18, ACCENT if n == 2 else GREY)
 
     # right: sizes
